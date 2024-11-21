@@ -5,7 +5,8 @@ if [ ! -f groups ]; then
 else
 	echo Groups finns redan
 fi
-cat groups | xargs -I% echo https://marhel.github.io/xmas23/?g=% | while read URL
+YEAR=$(date +%y)
+cat groups | xargs -I% echo https://marhel.github.io/xmas$YEAR/?g=% | while read URL
 do   
 	NUM=$(($NUM + 1))
 	if [[ $NUM -lt 10 ]]; then

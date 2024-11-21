@@ -43,12 +43,12 @@ section.has-light-background, section.has-light-background h1, section.has-light
 
 .reveal-viewport {
   background: #1c1e20;
-  background: -moz-radial-gradient(center, circle cover, #2469b7 0%, #273349 100%);
-  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #2469b7), color-stop(100%, #273349));
-  background: -webkit-radial-gradient(center, circle cover, #2469b7 0%, #273349 100%);
-  background: -o-radial-gradient(center, circle cover, #2469b7 0%, #273349 100%);
-  background: -ms-radial-gradient(center, circle cover, #2469b7 0%, #273349 100%);
-  background: radial-gradient(center, circle cover, #2469b7 0%, #273349 100%);
+  background: -moz-radial-gradient(center, circle cover, hsl(113, 67%, 35%) 0%, hsl(115, 30%, 22%) 100%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, hsl(113, 67%, 35%)), color-stop(100%, hsl(115, 30%, 22%)));
+  background: -webkit-radial-gradient(center, circle cover, hsl(113, 67%, 35%) 0%, hsl(115, 30%, 22%) 100%);
+  background: -o-radial-gradient(center, circle cover, hsl(113, 67%, 35%) 0%, hsl(115, 30%, 22%) 100%);
+  background: -ms-radial-gradient(center, circle cover, hsl(113, 67%, 35%) 0%, hsl(115, 30%, 22%) 100%);
+  background: radial-gradient(center, circle cover, hsl(113, 67%, 35%) 0%, hsl(115, 30%, 22%) 100%);
   background-color: var(--r-background-color);
 }
 

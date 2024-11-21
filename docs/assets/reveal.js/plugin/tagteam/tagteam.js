@@ -32,10 +32,12 @@
           var t = urlparams.get('t');
           var n = urlparams.get('n');
           var g = urlparams.get('g');
+          var d = new Date(urlparams.get('dodayay') || new Date().toISOString().substring(0,10));
           return {
             t: t,
             n: n,
-            g: g
+            g: g,
+            d: d
           };
         };
 
@@ -90,7 +92,7 @@
           }
         };
 
-        var hideItems = function hideItems(elems, elementsToShowArray, kind) {
+        var hideItems = function hideItems(elems, elementsToShowArray, kind, currentDate) {
           elems.forEach(function (elem) {
             var sectionArray = [];
 
@@ -113,16 +115,16 @@
 
             if (kind === 'after') {
               var afterDateStr = elem.dataset.after ? elem.dataset.after.toLowerCase() : elem.getAttribute(after).toLowerCase();
-
+              
               if (afterDateStr) {
                 var afterDate = new Date(afterDateStr);
-                sectionArray = [Date.now() > afterDate];
+                sectionArray = [currentDate >= afterDate];
                 console.log("afterStr", afterDateStr, sectionArray);
               }
               if (elem.parentNode.dataset.after) {
                 var parentAfterDateStr = elem.parentNode.dataset.after.toLowerCase();
                 var parentAfterDate = new Date(parentAfterDateStr);
-                var parentArray = [Date.now() > parentAfterDate];
+                var parentArray = [currentDate >= parentAfterDate];
                 if(!afterDateStr) {
                     console.log("using parent rule", parentAfterDateStr, parentArray);
                     sectionArray = sectionArray.concat(parentArray);
@@ -146,13 +148,16 @@
           var namedSections = deck.getRevealElement().querySelectorAll("section[data-name]:not([data-tag=keep])");
           var mandatorySections = deck.getRevealElement().querySelectorAll("section[data-mandatory]");
           var afterSections = deck.getRevealElement().querySelectorAll("section[data-after]");
-          var tagsToShow = getParams().t;
-          var namesToShow = getParams().n;
-          var groupsToShow = getParams().g;
+          var params = getParams();
+          // console.log(params);
+          var tagsToShow = params.t;
+          var namesToShow = params.n;
+          var groupToShow = params.g;
+          var currentDate = params.d;
           var groups = options.groups;
 
           if (options.mandatorygroup) {
-            if (!(groupsToShow in groups)) {
+            if (!(groupToShow in groups)) {
               hideItems(allSections, [], '');
             } else if (mandatorySections) {
               hideItems(mandatorySections, [], '');
@@ -160,11 +165,34 @@
           } else if (mandatorySections) {
             hideItems(mandatorySections, [], 'mnd');
           }
-          if (groupsToShow) {
-            if (groupsToShow in groups) {
-              var groupTagsToShow = groups[groupsToShow].tags;
-              var groupNamesToShow = groups[groupsToShow].names;
+          if (groupToShow) {
+            if (groupToShow in groups) {
+              var groupTagsToShow = groups[groupToShow].tags;
+              if(groupTagsToShow[0].startsWith('dec')){
+                var requestedDay = Number.parseInt(groupTagsToShow[0].substring(3));
+                groupTagsToShow.pop();
+                var currDay = currentDate.getDate();
+                var currMonth = currentDate.getMonth();
+                if (currMonth < 11)
+                  currDay = 0;
 
+                if (requestedDay > currDay)
+                {
+                  groupTagsToShow.push("tomorrow");
+                  currentDate.setDate(0);
+                } else {
+                  if (requestedDay == 1)
+                    window.location.hash = currDay - requestedDay + 1; // välkommensidan
+                  else
+                    window.location.hash = currDay - requestedDay
+                }
+                for (let day = 1; day <= Math.min(currDay, requestedDay); day++) {
+                  var dStr = ("0" + day);
+                  groupTagsToShow.push("dec" + dStr.substring(dStr.length - 2));
+                }
+                console.log(groupToShow, requestedDay, groupTagsToShow);
+              }
+              var groupNamesToShow = groups[groupToShow].names;
               if (!groupTagsToShow && !groupNamesToShow) {
                 console.log("Please set a 'tags' or an 'names' object in this group.");
               }
@@ -184,7 +212,7 @@
             }
             if(options.dateFilter) {
               console.log("after", afterSections);
-              hideItems(afterSections, [true], 'after');
+              hideItems(afterSections, [true], 'after', currentDate);
             }
           } else if (!options.mandatorygroup) {
             if (taggedSections && tagsToShow) {

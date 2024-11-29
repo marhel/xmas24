@@ -174,14 +174,14 @@
                 var currDay = currentDate.getDate();
                 var currMonth = currentDate.getMonth();
                 if (currMonth < 11)
-                  currDay = 0;
+                  currDay -= 30;
 
                 if (requestedDay > currDay)
                 {
                   groupTagsToShow.push("tomorrow");
                   currentDate.setDate(0);
                 } else {
-                  if (requestedDay == 1)
+                  if (requestedDay <= 0)
                     window.location.hash = currDay - requestedDay + 1; // välkommensidan
                   else
                     window.location.hash = currDay - requestedDay
@@ -190,6 +190,8 @@
                   var dStr = ("0" + day);
                   groupTagsToShow.push("dec" + dStr.substring(dStr.length - 2));
                 }
+                groupTagsToShow.push("init");
+                
                 console.log(groupToShow, requestedDay, groupTagsToShow);
               }
               var groupNamesToShow = groups[groupToShow].names;

@@ -7,6 +7,7 @@ Reveal.initialize({
       mandatorygroup: true,
       dateFilter: window.location.hostname != "allt.localhost",
       groups: {
+        "init": {tags: ["dec-9"]},
         "dd9752": {tags: ["dec01"]},
         "f5b5cc": {tags: ["dec02"]},
         "a4c231": {tags: ["dec03"]},

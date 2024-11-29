@@ -35,5 +35,5 @@ Reveal.initialize({
       }
     },
   dependencies: [{ src: 'assets/reveal.js/plugin/external/external.js', condition: function() { return !!document.querySelector( '[data-external]' ); } } ],
-  plugins: [Tagteam],
+  plugins: [Tagteam, RevealZoom],
 });
